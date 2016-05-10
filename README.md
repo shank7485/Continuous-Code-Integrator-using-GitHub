@@ -1,1 +1,1 @@
-# continuous_integrator_blog
+# Continuous Integrator of blog contents.
