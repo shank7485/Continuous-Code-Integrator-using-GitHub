@@ -138,8 +138,8 @@ def download_from_URL(hash_list, *args):
         print "ERROR in getting latest commit. Check if GitHub repo is private."
 
 
-username = "shank7485"
-password = "ahs&&2556"
+username = ""
+password = ""
 
 latest_commit = get_latest_commit("https://api.github.com/repos/shank7485/Blog_Files/branches", username, password)
 commit_checker_and_downloader(latest_commit)
