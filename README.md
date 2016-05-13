@@ -14,7 +14,7 @@ I am currently using this program to fetch new blog files from my private GitHub
  
     If Public Repo:
      ```
-    python commit_checker_and_downloader.py <Repo URL> <Destination Directory>
+    python commit_checker_and_downloader.py <Repo_URL> <Destination Directory>
     ```
     If Private Repo:
     ```
