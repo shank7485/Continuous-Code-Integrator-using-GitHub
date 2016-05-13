@@ -9,10 +9,10 @@ I am currently using this program to fetch new blog files from my private GitHub
 ![](add)
 
 ### Instruction to Run:
-* The program is be run as a [Cron](https://en.wikipedia.org/wiki/Cron) job (Linux) to check the GitHub repo periodically. Instruction can be found online on how to run programs periodically using Cron job.
-* 'cd' into the folder where the 'commit_checker_and_downloader.py' is present. From     there run based on the following. 
+ * The program is be run as a [Cron](https://en.wikipedia.org/wiki/Cron) job (Linux) to check the GitHub repo periodically. Instruction can be found online on how to run programs periodically using Cron job.
+ * 'cd' into the folder where the 'commit_checker_and_downloader.py' is present. From     there run based on the following. 
     If Public Repo:
-    ```
+     ```
     python commit_checker_and_downloader.py <Repo URL> <Destination Directory>
     ```
     If Private Repo:
