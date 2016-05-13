@@ -19,6 +19,7 @@ I am currently using this program to fetch new blog files from my private GitHub
     ```
     python commit_checker_and_downloader.py <Repo_URL> <Destination Directory> <username> <password>
     ```
+
 ### Example commands:
 For private repositories:
 ```
@@ -28,6 +29,7 @@ For private Repos:
 ```
 python commit_checker_and_downloader.py https://github.com/shank7485/Blog_Files /home/shashank/Desktop/Recent_files/ 'shank7485' 'password'
 ```
+
 ### Note:    
 * Make sure to be point inside to a directory while providing the final destination. Also include username and password inside single quotes to provide special characters. 
 * Be sure to have the ['commit_tracker.json'](https://raw.githubusercontent.com/shank7485/Continuous-Code-Integrator-using-GitHub/master/commit_tracker.json) in the same folder as the program. This is needed to keep track of recently commited hash values. 
