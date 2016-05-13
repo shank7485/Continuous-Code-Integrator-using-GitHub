@@ -194,6 +194,7 @@ username = ""
 password = ""
 
 if len(sys.argv) == 3:
+    # Checking if Public
     URL = sys.argv[1]
     directory = sys.argv[2]
 
@@ -205,6 +206,7 @@ if len(sys.argv) == 3:
     commit_checker_and_downloader(latest_commit, final_URL, directory)
 
 elif len(sys.argv) == 5:
+    # Checking if Private
     URL = sys.argv[1]
     directory = sys.argv[2]
     username = sys.argv[3]
@@ -223,5 +225,6 @@ elif len(sys.argv) == 5:
     commit_checker_and_downloader(latest_commit, final_URL, directory, username, password)
 
 elif len(sys.argv) != 3 or len(sys.argv) != 5:
+    # Others
     print "Error. Please check arguments passed."
     print "Example Usage: python commit_checker.py https://github.com/shank7485/Blog_Files /var/www/ <username> <password>"
