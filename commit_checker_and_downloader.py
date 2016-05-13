@@ -1,5 +1,7 @@
 import requests
 import json
+import sys
+
 
 def get_latest_commit(URL, *args):
     # URL will be https://api.github.com/repos/shank7485/Blog_Files/branches
@@ -24,7 +26,7 @@ def get_latest_commit(URL, *args):
             commit_id = data[0]["commit"]["sha"]
             return commit_id
     except:
-        print "ERROR in getting latest commit. Check if GitHub repo is private."
+        print "ERROR in getting latest commit. Check if GitHub repo is private. If private, check username/password"
 
 
 def hash_value_of_latest_files(latest_commit, URL, *args):
@@ -60,10 +62,10 @@ def hash_value_of_latest_files(latest_commit, URL, *args):
             return lst
 
     except:
-        print "ERROR in getting latest commit. Check if GitHub repo is private."
+        print "ERROR in getting latest commit. Check if GitHub repo is private. If private, check username/password"
 
 
-def download_from_URL(hash_list, URL1, *args):
+def download_from_URL(hash_list, URL1, directory, *args):
     # URL will be https://api.github.com/repos/shank7485/Blog_Files/contents/
     URL1 = URL1 + "contents/"
     try:
@@ -85,8 +87,9 @@ def download_from_URL(hash_list, URL1, *args):
                         file_name = i["name"]
                         URL2 = i["download_url"]
                         print "Downloading " + file_name + " from URL: " + URL2
+                        path = directory + file_name
                         response = requests.get(URL2, stream=True)
-                        with open(file_name, 'wb') as fil:
+                        with open(path, 'wb') as fil:
                             for content in response.iter_content(1024):
                                 if content:
                                     fil.write(content)
@@ -101,16 +104,17 @@ def download_from_URL(hash_list, URL1, *args):
                         file_name = i["name"]
                         URL2 = i["download_url"]
                         print "Downloading " + file_name + " from URL: " + URL2
+                        path = directory + file_name
                         response = requests.get(URL2, stream=True)
-                        with open(file_name, 'wb') as fil:
+                        with open(path, 'wb') as fil:
                             for content in response.iter_content(1024):
                                 if content:
                                     fil.write(content)
     except:
-        print "ERROR in getting latest commit. Check if GitHub repo is private."
+        print "ERROR in getting latest commit. Check if GitHub repo is private. If private, check username/password"
 
 
-def commit_checker_and_downloader(latest_commit, URL, *args):
+def commit_checker_and_downloader(latest_commit, URL, directory, *args):
     """
     Checks for changes in the commit. If there are any changes, it downloads the files which
     were uploaded during the commit.
@@ -155,7 +159,7 @@ def commit_checker_and_downloader(latest_commit, URL, *args):
                 # The hash values of the uploaded files are obtained.
 
                 hash_list = hash_value_of_latest_files(latest_commit, URL, username, password)
-                download_from_URL(hash_list, URL, username, password)
+                download_from_URL(hash_list, URL, directory, username, password)
             print ""
         else:
 
@@ -178,17 +182,46 @@ def commit_checker_and_downloader(latest_commit, URL, *args):
                     print "Updated JSON"
                     json.dump(dct, commit_tracker_json_w)
                 hash_list = hash_value_of_latest_files(latest_commit, URL)
-                download_from_URL(hash_list, URL)
+                download_from_URL(hash_list, URL, directory)
             print ""
     except:
-        print "ERROR in getting latest commit. Check if GitHub repo is private."
+        print "ERROR in getting latest commit. Check if GitHub repo is private. If private, check username/password"
 
 
+URL = ""
+directory = ""
 username = ""
 password = ""
 
-private_repo_URL = "https://api.github.com/repos/shank7485/Blog_Files" + "/"
-public_repo_URL = "https://api.github.com/repos/shank7485/Flask-APIs" + "/"
+if len(sys.argv) == 3:
+    URL = sys.argv[1]
+    directory = sys.argv[2]
 
-latest_commit = get_latest_commit(public_repo_URL)
-commit_checker_and_downloader(latest_commit, public_repo_URL)
+    user = URL.split("/")[3]
+    repo = URL.split("/")[4]
+    final_URL = "https://api.github.com/repos/" + user + "/" + repo + "/"
+
+    latest_commit = get_latest_commit(final_URL)
+    commit_checker_and_downloader(latest_commit, final_URL, directory)
+
+elif len(sys.argv) == 5:
+    URL = sys.argv[1]
+    directory = sys.argv[2]
+    username = sys.argv[3]
+    password = sys.argv[4]
+
+    user = URL.split("/")[3]
+    repo = URL.split("/")[4]
+    final_URL = "https://api.github.com/repos/" + user + "/" + repo + "/"
+
+    print final_URL
+    print directory
+    print username
+    print password
+
+    latest_commit = get_latest_commit(final_URL, username, password)
+    commit_checker_and_downloader(latest_commit, final_URL, directory, username, password)
+
+elif len(sys.argv) != 3 or len(sys.argv) != 5:
+    print "Error. Please check arguments passed."
+    print "Example Usage: python commit_checker.py https://github.com/shank7485/Blog_Files /var/www/ <username> <password>"
